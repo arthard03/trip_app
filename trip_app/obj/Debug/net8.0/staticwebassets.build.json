@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "Hash": "AJTMcXfiL0TtJUiV/xNPrcZ+48aZ4AGBeeoW1xdnv4A=",
+  "Source": "trip_app",
+  "BasePath": "_content/trip_app",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}
