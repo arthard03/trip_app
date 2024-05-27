@@ -16,14 +16,14 @@ namespace trip_app.Controllers
             _tripRepository = tripRepository;
         }
 
-        [HttpGet("trips")]
+        [HttpGet]
         public async Task<IActionResult> GetTrips([FromQuery] int page = 1, [FromQuery] int pageSize = 10)
         {
             var result = await _tripRepository.GetPaginatedTripsAsync(page, pageSize);
             return Ok(result);
         }
 
-        [HttpGet("trips/clients")] 
+        [HttpGet("clients")] 
         public async Task<IActionResult> GetTripsClients()
         {
             var result = await _tripRepository.GetAllTripsAsync();

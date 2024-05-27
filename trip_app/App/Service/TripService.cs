@@ -74,7 +74,7 @@ public class TripService : ITripService
             var isClientRegistered = await _tripRepository.IsClientRegisteredForTripAsync(client.IdClient, idTrip);
             if (isClientRegistered)
             {
-                throw new ClientAlreadyRegistered(client.IdClient);
+                throw new ClientAlreadyRegistered(client.IdClient,client.Pesel);
             }
         }
         else
