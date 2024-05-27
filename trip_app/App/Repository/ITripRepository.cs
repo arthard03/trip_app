@@ -8,7 +8,6 @@ public interface ITripRepository
     Task<PaginatedResult<Trip>> GetPaginatedTripsAsync(int page = 1, int pageSize = 10);
     Task<List<Trip>> GetAllTripsAsync();
     Task<bool> DeleteClientAsync(int idClient);
-    // Task<bool> AssignClientToTripAsync(ClientDTO clientDto, int idTrip);
     Task<Trip> GetTripByIdAsync(int idTrip);
     Task<Client> GetClientByPeselAsync(string pesel);
     Task<bool> IsClientRegisteredForTripAsync(int idClient, int idTrip);

@@ -57,10 +57,16 @@ public class TripService : ITripService
     public async Task<bool> AssignClientToTripAsync(ClientPostDTO clientDto, int idTrip)
     {
         var trip = await _tripRepository.GetTripByIdAsync(idTrip);
-        if (trip == null || trip.DateFrom <= DateTime.Now)
+        if (trip == null)
         {
-            throw new TripDoesNotExsits(idTrip);
+            throw new TripDoesNotExsits(idTrip); 
         }
+        
+        if (trip.DateFrom <= DateTime.Now)
+        {
+            throw new TripAlreadyStartedException(idTrip);  
+        }
+
 
         var client = await _tripRepository.GetClientByPeselAsync(clientDto.Pesel);
         if (client != null)

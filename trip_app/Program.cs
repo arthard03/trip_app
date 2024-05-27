@@ -1,7 +1,5 @@
-using Microsoft.EntityFrameworkCore;
 using trip_app.OutputFolder;
 using trip_app.OutputFolder.Middlewares;
-using trip_app.Repository;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,11 +10,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.RegisterInfraServices();
 builder.Services.RegisterApplicationServices(); 
 
-// // Configure DbContext with connection string from appsettings.json
-// builder.Services.AddDbContext<ApbdContext>(options =>
-//     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-// builder.Services.AddScoped<ITripRepository, TripRepository>();
 
 var app = builder.Build();
 app.UseMiddleware<ExceptionHandingMiddleware>();
