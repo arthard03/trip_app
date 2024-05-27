@@ -1,4 +1,5 @@
 using trip_app.DTO;
+using trip_app.Exceptions;
 using trip_app.OutputFolder;
 using trip_app.Repository;
 using TripApp.Application.Mappers;
@@ -8,6 +9,7 @@ namespace trip_app.Service;
 public class TripService : ITripService
 {
     private readonly ITripRepository _tripRepository;
+    
 
     public TripService(ITripRepository tripRepository)
     {
@@ -30,16 +32,69 @@ public class TripService : ITripService
 
         return mappedTrips;
     }
-
+    
     public async Task<List<TripDTO>> GetAllTripsAsync()
     {
         var trips = await _tripRepository.GetAllTripsAsync();
-
-        // Sort by StartDate in descending order before mapping
-        var sortedTrips = trips.OrderByDescending(trip => trip.DateFrom).ToList();
-
-        var mappedTrips = sortedTrips.Select(trip => trip.MapToGetTripDto()).ToList();
+        var mappedTrips = trips.Select(trip => trip.MapToGetTripDto()).ToList();
         return mappedTrips;
     }
 
+    public async Task<bool> DeleteClientAsync(int idClient)
+    {
+        try
+        {
+            var result = await _tripRepository.DeleteClientAsync(idClient);
+            return result;
+        }
+        catch (NotFoundException ex)
+        {
+
+            throw new ClintTripException(idClient);
+        }
+    }
+    
+    public async Task<bool> AssignClientToTripAsync(ClientPostDTO clientDto, int idTrip)
+    {
+        var trip = await _tripRepository.GetTripByIdAsync(idTrip);
+        if (trip == null || trip.DateFrom <= DateTime.Now)
+        {
+            throw new TripDoesNotExsits(idTrip);
+        }
+
+        var client = await _tripRepository.GetClientByPeselAsync(clientDto.Pesel);
+        if (client != null)
+        {
+            var isClientRegistered = await _tripRepository.IsClientRegisteredForTripAsync(client.IdClient, idTrip);
+            if (isClientRegistered)
+            {
+                throw new ClientAlreadyRegistered(client.IdClient);
+            }
+        }
+        else
+        {
+            client = new Client
+            {
+                FirstName = clientDto.FirstName,
+                LastName = clientDto.LastName,
+                Email = clientDto.Email,
+                Telephone = clientDto.Telephone,
+                Pesel = clientDto.Pesel
+            };
+
+            await _tripRepository.AddClientAsync(client);
+        }
+
+        var clientTrip = new ClientTrip
+        {
+            IdClient = client.IdClient,
+            IdTrip = idTrip,
+            RegisteredAt = DateTime.Now,
+            PaymentDate = DateTime.Now
+        };
+
+        await _tripRepository.AddClientTripAsync(clientTrip);
+
+        return true;
+    }
 }

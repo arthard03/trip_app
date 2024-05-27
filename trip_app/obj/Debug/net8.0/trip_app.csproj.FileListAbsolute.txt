@@ -134,3 +134,4 @@ C:\Users\ovsii\RiderProjects\trip_app\trip_app\bin\Debug\net8.0\runtimes\win\lib
 C:\Users\ovsii\RiderProjects\trip_app\trip_app\bin\Debug\net8.0\runtimes\win\lib\net6.0\System.Security.Cryptography.ProtectedData.dll
 C:\Users\ovsii\RiderProjects\trip_app\trip_app\bin\Debug\net8.0\runtimes\win\lib\net6.0\System.Windows.Extensions.dll
 C:\Users\ovsii\RiderProjects\trip_app\trip_app\obj\Debug\net8.0\trip_app.csproj.Up2Date
+C:\Users\ovsii\RiderProjects\trip_app\trip_app\obj\Debug\net8.0\trip_app.sourcelink.json

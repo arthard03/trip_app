@@ -7,4 +7,7 @@ public interface ITripService
 {
     Task<PaginatedResult<TripDTO>> GetPaginatedTripsAsync(int page = 1, int pageSize = 10);
     Task<List<TripDTO>> GetAllTripsAsync();
+    Task<bool> DeleteClientAsync(int idClient);
+    Task<bool> AssignClientToTripAsync(ClientPostDTO clientDto, int idTrip);
+
 }

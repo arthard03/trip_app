@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
-using trip_app.OutputFolder;
-using trip_app.Repository;
+using trip_app.DTO;
+using trip_app.Exceptions;
+
 using trip_app.Service;
 
 namespace trip_app.Controllers
@@ -10,7 +11,6 @@ namespace trip_app.Controllers
     public class TripController : ControllerBase
     {
         private readonly ITripService _tripRepository;
-
         public TripController(ITripService tripRepository)
         {
             _tripRepository = tripRepository;
@@ -29,23 +29,44 @@ namespace trip_app.Controllers
             var result = await _tripRepository.GetAllTripsAsync();
             return Ok(result);
         }
-        // // POST: api/Clients
-        // // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        // [HttpPost]
-        // public async Task<ActionResult<Client>> PostClient(Client client)
-        // {
-        //     return null;
-        // }
-        //
-        // // DELETE: api/Clients/5
-        // [HttpDelete("{id}")]
-        // public async Task<IActionResult> DeleteClient(int id)
-        // {
-        //     
-        //     return NoContent();
-        // }
+        [HttpPost("{idTrip}/clients")]
+        public async Task<IActionResult> AssignClientToTrip(int idTrip, [FromBody] ClientPostDTO clientDto)
+        {
+            try
+            {
+                var result = await _tripRepository.AssignClientToTripAsync(clientDto, idTrip);
+                if (!result)
+                {
+                    return BadRequest("Unable to assign client to trip.");
+                }
 
-
+                return Ok();
+            }
+            catch (NotFoundException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+        
+        [HttpDelete("{idClient}")]
+        public async Task<IActionResult> DeleteClient(int idClient)
+        {
+            try
+            {
+                var result = await _tripRepository.DeleteClientAsync(idClient);
+        
+                if (!result)
+                {
+                    return NotFound("Client not found.");
+                }
+        
+                return NoContent();
+            }
+            catch (NotFoundException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
 
     }
 }
