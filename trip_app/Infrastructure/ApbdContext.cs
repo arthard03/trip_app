@@ -17,6 +17,7 @@ public partial class ApbdContext : DbContext {
     }
 
     public virtual DbSet<Client> Clients { get; set; }
+    public DbSet<AppUser> Users { get; set; }
 
     public virtual DbSet<ClientTrip> ClientTrips { get; set; }
 
